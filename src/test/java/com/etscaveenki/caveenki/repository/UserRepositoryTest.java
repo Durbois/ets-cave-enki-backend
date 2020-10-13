@@ -21,8 +21,9 @@ public class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
+
     @Test
-    @Sql("../../../../../resources/user.sql")
+    @Sql("user.sql")
     public void whenInitializedByDbUnit_thenFindsByName() {
         Optional<User> user = userRepository.findByUsername("user");
         assert (user != null);
