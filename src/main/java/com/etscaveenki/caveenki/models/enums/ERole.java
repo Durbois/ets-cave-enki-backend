@@ -1,4 +1,4 @@
-package com.etscaveenki.caveenki.models;
+package com.etscaveenki.caveenki.models.enums;
 
 public enum ERole {
 

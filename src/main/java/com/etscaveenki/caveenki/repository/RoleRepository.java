@@ -1,6 +1,6 @@
 package com.etscaveenki.caveenki.repository;
 
-import com.etscaveenki.caveenki.models.ERole;
+import com.etscaveenki.caveenki.models.enums.ERole;
 import com.etscaveenki.caveenki.models.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

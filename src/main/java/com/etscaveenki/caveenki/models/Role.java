@@ -1,5 +1,7 @@
 package com.etscaveenki.caveenki.models;
 
+import com.etscaveenki.caveenki.models.enums.ERole;
+
 import javax.persistence.*;
 
 @Entity

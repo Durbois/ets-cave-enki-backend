@@ -11,7 +11,7 @@ import com.etscaveenki.caveenki.dtos.LoginRequest;
 import com.etscaveenki.caveenki.dtos.SignupRequest;
 import com.etscaveenki.caveenki.dtos.responses.JwtResponse;
 import com.etscaveenki.caveenki.dtos.responses.MessageResponse;
-import com.etscaveenki.caveenki.models.ERole;
+import com.etscaveenki.caveenki.models.enums.ERole;
 import com.etscaveenki.caveenki.models.Role;
 import com.etscaveenki.caveenki.models.User;
 import com.etscaveenki.caveenki.repository.RoleRepository;
