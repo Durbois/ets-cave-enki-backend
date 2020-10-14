@@ -5,6 +5,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -25,8 +27,8 @@ public class UserRepositoryTest {
     @Test
     @Sql("user.sql")
     public void whenInitializedByDbUnit_thenFindsByName() {
-        Optional<User> user = userRepository.findByUsername("user");
-        assert (user != null);
+        Optional<User> userOptional = userRepository.findByUsername("user");
+        assert (userOptional != null);
+        assert( "user".equals(userOptional.get().getUsername()) );
     }
-
 }
