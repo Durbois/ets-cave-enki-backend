@@ -6,6 +6,8 @@ import com.etscaveenki.caveenki.models.enums.ProductType;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -21,24 +23,29 @@ public class Product {
     private String name;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "contenttype")
     private ContentType contentType;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "producttype")
     private ProductType productType;
 
     @NotBlank
+    @Column(name = "unitprice")
     private double unitPrice;
 
     @NotBlank
+    @Column(name = "boxprice")
     private double boxPrice;
 
-    private Set <String> ingredients;
+    @Column(name = "ingredients")
+    private String ingredients;
 
     public Product() {
     }
 
     public Product(String name, ContentType contentType, ProductType productType,
-                   double unitPrice, double boxPrice, Set<String> ingredients) {
+                   double unitPrice, double boxPrice, String ingredients) {
         this.name = name;
         this.contentType = contentType;
         this.productType = productType;
@@ -95,11 +102,11 @@ public class Product {
         this.boxPrice = boxPrice;
     }
 
-    public Set<String> getIngredients() {
+    public String getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(Set<String> ingredients) {
+    public void setIngredients(String ingredients) {
         this.ingredients = ingredients;
     }
 }
