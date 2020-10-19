@@ -35,7 +35,6 @@ public class ProductRepositoryTest {
         assert(products.get(1).getName().equals("rose"));
         assert(products.get(0).getName().equals("bordeaux"));
         assert(products.get(2).getName().equals("bull"));
-
     }
 
 }

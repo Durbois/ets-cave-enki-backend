@@ -17,4 +17,8 @@ public class ProductService {
     public List<Product> getAllProductsSortBy (String sortCriteria) {
         return productRepository.findAllProducts(Sort.by(sortCriteria));
     }
+
+    public Product createNewProduct (Product product) {
+        return productRepository.save(product);
+    }
 }

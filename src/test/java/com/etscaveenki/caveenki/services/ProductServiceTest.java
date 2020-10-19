@@ -6,16 +6,20 @@ import com.etscaveenki.caveenki.models.enums.ProductType;
 import com.etscaveenki.caveenki.repository.ProductRepository;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Collections;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+@RunWith(SpringRunner.class)
 public class ProductServiceTest {
 
     @Mock
@@ -27,11 +31,26 @@ public class ProductServiceTest {
     @Test
     public void shouldFindAllProducts () {
 
-        final Product product = new Product("name", ContentType.BOTTLE, ProductType.RED_WINE,
-        10.3, 1000, "Banana;Aroma");
+        when(productRepository.findAllProducts(any())).thenReturn(Collections.singletonList(getProduct()));
 
-        given(productRepository.findAllProducts(any())).willReturn(Collections.singletonList(product));
+        List<Product> products = productService.getAllProductsSortBy("contentType");
 
+        assert(products.size() == 1);
+    }
 
+    @Test
+    public void shouldCreateNewProduct() {
+
+        when(productRepository.save(any())).thenReturn(getProduct());
+
+        Product product = productService.createNewProduct(getProduct());
+
+        assert(product != null);
+        assert(product.getName().equals("name"));
+    }
+
+    private Product getProduct() {
+        return new Product("name", ContentType.BOTTLE, ProductType.RED_WINE,
+                10.3, 1000, "Banana;Aroma");
     }
 }
