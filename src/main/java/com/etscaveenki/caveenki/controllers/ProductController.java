@@ -2,6 +2,12 @@ package com.etscaveenki.caveenki.controllers;
 
 import com.etscaveenki.caveenki.models.Product;
 import com.etscaveenki.caveenki.services.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +33,12 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @Operation(summary = "Get a list of products")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Found the list of products",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = List.class)) })
+    })
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> findAllProductsSortedBy(@RequestParam(required = false) String sortedBy) {
 
@@ -41,6 +53,7 @@ public class ProductController {
         return ResponseEntity.ok().body(products);
     }
 
+    @Operation(summary = "Create a new product Item", security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> createNewProduct(@Valid @RequestBody Product product) {
