@@ -12,6 +12,6 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
 
-    @Query(value = "select p from Product p")
+    @Query(value = "select p from Product p ORDER BY productType")
     List <Product> findAllProducts(Sort sort);
 }

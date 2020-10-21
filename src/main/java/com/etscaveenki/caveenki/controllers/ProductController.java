@@ -22,7 +22,7 @@ public class ProductController {
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     @Value("${caveenki.sorted.type}")
-    private String sortedType = "productType";
+    private String sortedType;
 
     @Autowired
     private ProductService productService;
@@ -41,7 +41,7 @@ public class ProductController {
         return ResponseEntity.ok().body(products);
     }
 
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> createNewProduct(@Valid @RequestBody Product product) {
 

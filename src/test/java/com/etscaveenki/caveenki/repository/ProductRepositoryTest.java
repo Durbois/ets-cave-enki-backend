@@ -1,6 +1,7 @@
 package com.etscaveenki.caveenki.repository;
 
 import com.etscaveenki.caveenki.models.Product;
+import com.etscaveenki.caveenki.models.enums.ContentType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +32,11 @@ public class ProductRepositoryTest {
     public void productShouldBeSortedByContentType() {
         List<Product> products = productRepository.findAllProducts( Sort.by("contentType") );
 
-        assert(products.size() == 3);
-        assert(products.get(1).getName().equals("rose"));
+        assert(products.size() == 5);
         assert(products.get(0).getName().equals("bordeaux"));
-        assert(products.get(2).getName().equals("bull"));
+        assert(products.get(1).getName().equals("bull"));
+        assert(products.get(2).getName().equals("rose") && products.get(2).getContentType() == ContentType.BOTTLE);
+        assert(products.get(3).getName().equals("rose") && products.get(3).getContentType() == ContentType.CAN);
+        assert(products.get(4).getName().equals("rose") && products.get(4).getContentType() == ContentType.SACHET);
     }
-
 }
