@@ -14,7 +14,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Collections;
@@ -59,11 +58,18 @@ public class ProductControllerTest {
     // @WithMockUser(roles = {"ADMIN"})
     public void shoudCreateProduct(){
 
-        when(productService.createNewProduct(any(Product.class))).thenReturn(getProduct());
+        when(productService.createOrUpdateProduct(any(Product.class))).thenReturn(getProduct());
 
         ResponseEntity<?> responseEntity = restTemplate.postForEntity("/api/product", getProduct(), Product.class);
 
         assertThat(responseEntity.getBody().equals(getProduct()));
+    }
+
+    @Test
+    // @WithMockUser(roles = {"ADMIN"})
+    public void shoudDeleteProduct(){
+
+        restTemplate.delete("/api/product/1");
     }
 
     private Product getProduct() {

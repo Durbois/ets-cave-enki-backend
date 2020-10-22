@@ -5,18 +5,15 @@ import com.etscaveenki.caveenki.models.enums.ContentType;
 import com.etscaveenki.caveenki.models.enums.ProductType;
 import com.etscaveenki.caveenki.repository.ProductRepository;
 import org.junit.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
@@ -43,7 +40,7 @@ public class ProductServiceTest {
 
         when(productRepository.save(any())).thenReturn(getProduct());
 
-        Product product = productService.createNewProduct(getProduct());
+        Product product = productService.createOrUpdateProduct(getProduct());
 
         assert(product != null);
         assert(product.getName().equals("name"));

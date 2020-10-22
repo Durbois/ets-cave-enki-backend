@@ -18,7 +18,11 @@ public class ProductService {
         return productRepository.findAllProducts(Sort.by(sortCriteria));
     }
 
-    public Product createNewProduct (Product product) {
+    public Product createOrUpdateProduct(Product product) {
         return productRepository.save(product);
+    }
+
+    public void deleteProductById (Integer id) {
+        productRepository.deleteProductById(id);
     }
 }

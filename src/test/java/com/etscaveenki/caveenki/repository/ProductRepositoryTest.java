@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Collections;
 import java.util.List;
 
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -38,5 +39,18 @@ public class ProductRepositoryTest {
         assert(products.get(2).getName().equals("rose") && products.get(2).getContentType() == ContentType.BOTTLE);
         assert(products.get(3).getName().equals("rose") && products.get(3).getContentType() == ContentType.CAN);
         assert(products.get(4).getName().equals("rose") && products.get(4).getContentType() == ContentType.SACHET);
+    }
+
+    @Test
+    @Sql("product.sql")
+    public void productShouldBeDeletedById() {
+        productRepository.deleteProductById(5);
+
+        List<Product> products = productRepository.findAllProducts( Sort.by("contentType") );
+
+        assert(products.size() == 4);
+        products.stream().forEach(product  -> {
+            assertThat(!product.getName().equals("bordeaux"));
+        });
     }
 }

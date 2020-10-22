@@ -1,5 +1,6 @@
 package com.etscaveenki.caveenki.controllers;
 
+import com.etscaveenki.caveenki.dtos.responses.MessageResponse;
 import com.etscaveenki.caveenki.models.Product;
 import com.etscaveenki.caveenki.services.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -56,8 +57,17 @@ public class ProductController {
     @Operation(summary = "Create a new product Item", security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> createNewProduct(@Valid @RequestBody Product product) {
+    public ResponseEntity<?> createOrUpdateProduct(@Valid @RequestBody Product product) {
 
-        return ResponseEntity.ok().body(productService.createNewProduct(product));
+        return ResponseEntity.ok().body(productService.createOrUpdateProduct(product));
+    }
+
+    @Operation(summary = "Delete a new product by Id", security = @SecurityRequirement(name = "bearerAuth"))
+    @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> deleteProductById(@PathVariable("id") Integer id ) {
+        productService.deleteProductById(id);
+
+        return ResponseEntity.ok(new MessageResponse("Product successfully removed"));
     }
 }
