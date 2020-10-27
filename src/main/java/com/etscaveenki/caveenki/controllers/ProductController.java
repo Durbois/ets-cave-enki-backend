@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -69,5 +70,16 @@ public class ProductController {
         productService.deleteProductById(id);
 
         return ResponseEntity.ok(new MessageResponse("Product successfully removed"));
+    }
+
+    @Operation(summary = "Get a product by Id")
+    @GetMapping(value = "/item/{id}")
+    public ResponseEntity<?> findProductById (@PathVariable("id") Integer id) {
+        Optional<Product> optionalProduct = productService.findProductById(id);
+
+        if(optionalProduct.isEmpty()) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Product doesn't exist!"));
+        }
+        return ResponseEntity.ok().body(optionalProduct.get());
     }
 }
