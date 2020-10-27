@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
@@ -18,8 +19,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(value = "select p from Product p ORDER BY productType")
     List <Product> findAllProducts(Sort sort);
 
+    @Query(value = "select p from Product p where p.id = :id ")
+    Optional<Product> findProductById(@Param("id") Integer id);
+
     @Transactional
     @Modifying
     @Query(value = "delete from Product p where p.id = :id")
     void deleteProductById(@Param("id") Integer id);
+
 }

@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -52,5 +53,14 @@ public class ProductRepositoryTest {
         products.stream().forEach(product  -> {
             assertThat(!product.getName().equals("bordeaux"));
         });
+    }
+
+    @Test
+    @Sql("product.sql")
+    public void productShouldBeFoundById() {
+        Optional<Product> optionalProduct = productRepository.findProductById(4);
+
+        assertThat(optionalProduct.isPresent());
+        assertThat(optionalProduct.get().getName().equals("bull"));
     }
 }
