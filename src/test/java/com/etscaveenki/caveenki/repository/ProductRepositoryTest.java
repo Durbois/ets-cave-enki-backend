@@ -2,6 +2,7 @@ package com.etscaveenki.caveenki.repository;
 
 import com.etscaveenki.caveenki.models.Product;
 import com.etscaveenki.caveenki.models.enums.ContentType;
+import com.etscaveenki.caveenki.models.enums.ProductType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -51,7 +53,7 @@ public class ProductRepositoryTest {
 
         assert(products.size() == 4);
         products.stream().forEach(product  -> {
-            assertThat(!product.getName().equals("bordeaux"));
+            assert(!product.getName().equals("bordeaux"));
         });
     }
 
@@ -62,5 +64,19 @@ public class ProductRepositoryTest {
 
         assertThat(optionalProduct.isPresent());
         assertThat(optionalProduct.get().getName().equals("bull"));
+    }
+
+    @Test
+    @Sql("product.sql")
+    public void productShouldBeFoundByProductType() {
+        List<ProductType> productTypes = Arrays.asList(ProductType.WHITE_WINE, ProductType.RED_WINE);
+
+        List<Product> products = productRepository.filterProductsByProductType(productTypes, Sort.by("contentType"));
+
+        assert(products.size() == 4);
+        assert(products.get(0).getContentType().equals(ContentType.BOTTLE));
+        assert(products.get(1).getContentType().equals(ContentType.BOTTLE));
+        assert(products.get(2).getContentType().equals(ContentType.CAN));
+        assert(products.get(3).getContentType().equals(ContentType.SACHET));
     }
 }

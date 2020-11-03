@@ -42,14 +42,18 @@ public class ProductController {
                             schema = @Schema(implementation = List.class)) })
     })
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> findAllProductsSortedBy(@RequestParam(required = false) String sortedBy) {
+    public ResponseEntity<?> findAllProductsSortedBy(@RequestParam(required = false) List<String> productTypes) {
 
         List<Product> products;
 
-        if (sortedBy == null) {
-            products = productService.getAllProductsSortBy(sortedType);
+        if (productTypes == null) {
+           products = productService.getAllProductsSortBy(sortedType);
         } else {
-            products = productService.getAllProductsSortBy(sortedBy);
+          try {
+             products = productService.findProductsByProductType(productTypes, sortedType);
+           } catch (IllegalArgumentException e) {
+               return ResponseEntity.badRequest().body(new MessageResponse("Please check the requestParam productTypes again!"));
+           }
         }
 
         return ResponseEntity.ok().body(products);

@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +35,22 @@ public class ProductServiceTest {
         List<Product> products = productService.getAllProductsSortBy("contentType");
 
         assert(products.size() == 1);
+    }
+
+    @Test
+    public void shouldFilterProductsByProductType () {
+        when(productRepository.filterProductsByProductType(any(), any())).thenReturn(Collections.singletonList(getProduct()));
+
+        List<Product> products = productService.findProductsByProductType(Arrays.asList("RED_WINE"), "contentType");
+
+        assert(products.size() == 1);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowException () {
+        when(productRepository.filterProductsByProductType(any(), any())).thenReturn(Collections.singletonList(getProduct()));
+
+        productService.findProductsByProductType(Arrays.asList("RED"), "contentType");
     }
 
     @Test
