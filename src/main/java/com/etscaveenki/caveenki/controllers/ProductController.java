@@ -35,11 +35,14 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @Operation(summary = "Get a list of products")
+    @Operation(summary = "Get a list of products, could be filtered by productTypes")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the list of products",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = List.class)) })
+                            schema = @Schema(implementation = List.class)) }),
+            @ApiResponse(responseCode = "400", description = "The requestParam doest match the enum type",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MessageResponse.class)) })
     })
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> findAllProductsSortedBy(@RequestParam(required = false) List<String> productTypes) {
