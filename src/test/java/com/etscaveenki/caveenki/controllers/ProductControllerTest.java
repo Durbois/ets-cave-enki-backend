@@ -67,9 +67,16 @@ public class ProductControllerTest {
 
     @Test
     // @WithMockUser(roles = {"ADMIN"})
-    public void shoudDeleteProduct(){
+    public void shoudDeleteProductById(){
 
         restTemplate.delete("/api/product/1");
+    }
+
+    @Test
+    // @WithMockUser(roles = {"ADMIN"})
+    public void shoudGetProductById(){
+
+        restTemplate.getForEntity("/api/product/1", Product.class);
     }
 
     private Product getProduct() {

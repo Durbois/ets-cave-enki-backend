@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -34,21 +35,28 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @Operation(summary = "Get a list of products")
+    @Operation(summary = "Get a list of products, could be filtered by productTypes")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the list of products",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = List.class)) })
+                            schema = @Schema(implementation = List.class)) }),
+            @ApiResponse(responseCode = "400", description = "The requestParam doest match the enum type",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MessageResponse.class)) })
     })
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> findAllProductsSortedBy(@RequestParam(required = false) String sortedBy) {
+    public ResponseEntity<?> findAllProductsSortedBy(@RequestParam(required = false) List<String> productTypes) {
 
         List<Product> products;
 
-        if (sortedBy == null) {
-            products = productService.getAllProductsSortBy(sortedType);
+        if (productTypes == null) {
+           products = productService.getAllProductsSortBy(sortedType);
         } else {
-            products = productService.getAllProductsSortBy(sortedBy);
+          try {
+             products = productService.findProductsByProductType(productTypes, sortedType);
+           } catch (IllegalArgumentException e) {
+               return ResponseEntity.badRequest().body(new MessageResponse("Please check the requestParam productTypes again!"));
+           }
         }
 
         return ResponseEntity.ok().body(products);
@@ -69,5 +77,16 @@ public class ProductController {
         productService.deleteProductById(id);
 
         return ResponseEntity.ok(new MessageResponse("Product successfully removed"));
+    }
+
+    @Operation(summary = "Get a product by Id")
+    @GetMapping(value = "/item/{id}")
+    public ResponseEntity<?> findProductById (@PathVariable("id") Integer id) {
+        Optional<Product> optionalProduct = productService.findProductById(id);
+
+        if(optionalProduct.isEmpty()) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Product doesn't exist!"));
+        }
+        return ResponseEntity.ok().body(optionalProduct.get());
     }
 }
