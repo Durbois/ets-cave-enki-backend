@@ -43,7 +43,7 @@ spec:
 }
   }
   stages {
-    stage('Build target jar') {
+    /*stage('Build target jar') {
           steps {
             sh("./mvnw clean install")
           }
@@ -55,7 +55,7 @@ spec:
           sh "PYTHONUNBUFFERED=1 gcloud builds submit -t ${IMAGE_TAG} ."
         }
       }
-    }
+    }*/
 
     stage('Deploy Backend') {
           // Canary branch
