@@ -2,7 +2,7 @@ pipeline {
 
   environment {
     PROJECT = "cave-enki"
-    APP_NAME = "ets-cave-enki"
+    APP_NAME = "cave-enki"
     FE_SVC_NAME = "${APP_NAME}-backend"
     CLUSTER = "jenkins-cd"
     CLUSTER_ZONE = "europe-west1-d"
@@ -12,7 +12,7 @@ pipeline {
 
   agent {
     kubernetes {
-      label 'ets-cave-enki'
+      label 'master'
       defaultContainer 'jnlp'
       yaml """
 apiVersion: v1
