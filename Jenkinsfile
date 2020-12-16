@@ -43,6 +43,12 @@ spec:
 }
   }
   stages {
+    stage('Build target jar') {
+          steps {
+            sh("./mvnw clean install")
+          }
+        }
+
     stage('Build and push image with Container Builder') {
       steps {
         container('gcloud') {
@@ -50,6 +56,18 @@ spec:
         }
       }
     }
+
+    stage('Deploy Backend') {
+          // Canary branch
+          when { branch 'development' }
+          steps {
+            container('kubectl') {
+              // Change deployed image in canary to the one we just built
+              sh("kubectl get ns cave-enki || kubectl create ns cave-enki")
+              sh("kubectl apply -f ./k8s/db-secret.yaml")
+            }
+          }
+        }
 
   }
 }
