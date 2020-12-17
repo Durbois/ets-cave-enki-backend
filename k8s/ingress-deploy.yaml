@@ -7,8 +7,7 @@ metadata:
     kubernetes.io/ingress.global-static-ip-name: cave-enki-ip
 spec:
   rules:
-    - host: cave-enki
-      http:
+    - http:
         paths:
           - path: /backend
             backend:
