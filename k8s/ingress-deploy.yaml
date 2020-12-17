@@ -4,7 +4,6 @@ metadata:
   name: cave-enki-ingress
   namespace: cave-enki
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
     kubernetes.io/ingress.global-static-ip-name: cave-enki-ip
 spec:
   rules:
@@ -12,7 +11,6 @@ spec:
       http:
         paths:
           - path: /backend
-            pathType: Prefix
             backend:
               serviceName: cave-enki-backend
               servicePort: 8080
