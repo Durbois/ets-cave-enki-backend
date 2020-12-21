@@ -8,7 +8,7 @@ metadata:
     kubernetes.io/ingress.class: nginx
 spec:
   rules:
-    - host: cavesdenki.ddns.net
+    - # host: cavesdenki.ddns.net
       http:
         paths:
           - path: /backend
