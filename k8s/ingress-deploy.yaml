@@ -5,6 +5,7 @@ metadata:
   namespace: cave-enki
   annotations:
     kubernetes.io/ingress.global-static-ip-name: cave-enki-ip
+    kubernetes.io/ingress.class: nginx
 spec:
   rules:
     - host: cavesdenki.ddns.net
