@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment                    # Type of the kubernetes resource
+metadata:
+  name: mysqldb             # Name of the deployment
+  namespace: cave-enki
+  labels:                           # Labels applied to this deployment 
+    app: cave-enki
+spec:
+  selector:
+    matchLabels:                    # This deployment applies to the Pods matching the specified labels
+      app: cave-enki
+      tier: mysql
+  strategy:
+    type: Recreate
+  template:                         # Template for the Pods in this deployment
+    metadata:
+      labels:                       # Labels to be applied to the Pods in this deployment
+        app: cave-enki
+        tier: mysql
+    spec:                           # The spec for the containers that will be run inside the Pods in this deployment
+      containers:
+      - image: mysql:8            # The container image
+        name: mysqldb
+        env:                        # Environment variables passed to the container 
+        - name: MYSQL_ROOT_PASSWORD 
+          valueFrom:                # Read environment variables from kubernetes secrets
+            secretKeyRef:
+              name: db-secret
+              key: MYSQL_ROOT_PASSWORD
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: MYSQL_DATABASE
+        ports:
+        - containerPort: 3306        # The port that the container exposes       
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage  # This name should match the name specified in `volumes.name`
+          mountPath: /var/lib/mysql
+      volumes:                       # A PersistentVolume is mounted as a volume to the Pod  
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pv-claim

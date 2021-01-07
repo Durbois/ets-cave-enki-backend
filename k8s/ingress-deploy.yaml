@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: cave-enki-ingress
+  namespace: cave-enki
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: cave-enki-ip
+    # nginx.ingress.kubernetes.io/rewrite-target: /$2
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+    - host: caves-denki.com
+      http:
+        paths:
+          - path: /backend
+            backend:
+              serviceName: cave-enki-backend
+              servicePort: 80
+          # - pathType: Prefix
+          #   path: "/"
+          #   backend:
+          #     service:
+          #       name: cave-enki-frontend
+          #       port:
+          #         number: 8080
