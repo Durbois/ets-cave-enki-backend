@@ -16,7 +16,7 @@ spec:
           - path: /backend
             backend:
               serviceName: cave-enki-backend
-              servicePort: 8080
+              servicePort: 80
           # - pathType: Prefix
           #   path: "/"
           #   backend:
